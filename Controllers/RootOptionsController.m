@@ -283,7 +283,7 @@ static int __isOSVersionAtLeast(int major, int minor, int patch) { NSOperatingSy
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
     if (section == 4) {
-        return @"Version: 3.0.0 (Beta)";
+        return @"Version: 2.0.0 (Beta)";
     }
     return nil;
 }
@@ -293,7 +293,7 @@ static int __isOSVersionAtLeast(int major, int minor, int patch) { NSOperatingSy
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (section == 0 || section == 1 || section == 2 || section == 4) {
+    if (section == 0 || section == 1 || section == 3) {
         return 50;
     }
     return 0;
