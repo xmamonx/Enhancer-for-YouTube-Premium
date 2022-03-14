@@ -313,7 +313,7 @@ static int __isOSVersionAtLeast(int major, int minor, int patch) { NSOperatingSy
 }
 
 - (CGFloat)tableView:(UITableView*)tableView heightForFooterInSection:(NSInteger)section {
-    if (section == 4) {
+    if (section == 3) {
         return 50;
     }
     return 0;
