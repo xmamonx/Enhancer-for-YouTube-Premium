@@ -113,15 +113,6 @@ YTUserDefaults *ytThemeSettings;
 }
 %end
 
-%group gNoDownloadButton
-%hook YTTransferButton
-- (void)setVisible:(BOOL)arg1 dimmed:(BOOL)arg2 {
-    arg1 = 0;
-	%orig;
-}
-%end
-%end
-
 %group gNoCastButton
 %hook YTSettings
 - (BOOL)disableMDXDeviceDiscovery {
@@ -272,6 +263,13 @@ YTUserDefaults *ytThemeSettings;
 - (void)setVoiceSearchEnabled:(BOOL)arg1 {
     arg1 = 0;
 	%orig;
+}
+%end
+%hook YTSearchViewController
+- (void)viewDidLoad {
+    %orig();
+    MSHookIvar<UIButton *>(self, "_voiceButton").enabled = NO;
+    MSHookIvar<UIButton *>(self, "_voiceButton").frame = CGRectMake(0, 0, 0, 0);
 }
 %end
 %end
@@ -1082,7 +1080,6 @@ int selectedTabIndex = 0;
 
 %ctor {
     @autoreleasepool {
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"kNoDownloadButton"] == YES) %init(gNoDownloadButton);
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"kNoCastButton"] == YES) %init(gNoCastButton);
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"kNoNotificationButton"] == YES) %init(gNoNotificationButton);
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"kAllowHDOnCellularData"] == YES) %init(gAllowHDOnCellularData);
