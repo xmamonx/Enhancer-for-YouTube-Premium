@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "Controllers/RootOptionsController.h"
-#import "DTTJailbreakDetection/DTTJailbreakDetection.h"
+#import "../Jailbreak-Detection-Lib/JailbreakDetectionLib.h"
 #import "Tweak.h"
 
 UIColor *hexColour() {
@@ -72,7 +72,7 @@ YTUserDefaults *ytThemeSettings;
 
 %hook SSOKeychain
 + (id)accessGroup {
-    if (![DTTJailbreakDetection isJailbroken]) {
+    if (![JailbreakDetectionLib isJailbroken]) {
         NSDictionary *query = [NSDictionary dictionaryWithObjectsAndKeys:
                             (__bridge NSString *)kSecClassGenericPassword, (__bridge NSString *)kSecClass,
                             @"bundleSeedID", kSecAttrAccount,
@@ -92,7 +92,7 @@ YTUserDefaults *ytThemeSettings;
     return %orig;
 }
 + (id)sharedAccessGroup {
-    if (![DTTJailbreakDetection isJailbroken]) {
+    if (![JailbreakDetectionLib isJailbroken]) {
         NSDictionary *query = [NSDictionary dictionaryWithObjectsAndKeys:
                             (__bridge NSString *)kSecClassGenericPassword, (__bridge NSString *)kSecClass,
                             @"bundleSeedID", kSecAttrAccount,
@@ -116,7 +116,7 @@ YTUserDefaults *ytThemeSettings;
 %group gNoCastButton
 %hook YTSettings
 - (BOOL)disableMDXDeviceDiscovery {
-    return 1;
+    return YES;
 } 
 %end
 %hook YTRightNavigationButtons
@@ -136,13 +136,13 @@ YTUserDefaults *ytThemeSettings;
 %group gNoNotificationButton
 %hook YTNotificationPreferenceToggleButton
 - (void)setHidden:(BOOL)arg1 {
-    arg1 = 1;
+    arg1 = YES;
     %orig;
 }
 %end
 %hook YTNotificationMultiToggleButton
 - (void)setHidden:(BOOL)arg1 {
-    arg1 = 1;
+    arg1 = YES;
     %orig;
 }
 %end
@@ -157,19 +157,19 @@ YTUserDefaults *ytThemeSettings;
 %group gAllowHDOnCellularData
 %hook YTUserDefaults
 - (BOOL)disableHDOnCellular {
-	return 0;
+	return NO;
 }
 - (void)setDisableHDOnCellular:(BOOL)arg1 {
-    arg1 = 0;
+    arg1 = NO;
     %orig;
 }
 %end
 %hook YTSettings
 - (BOOL)disableHDOnCellular {
-	return 0;
+	return NO;
 }
 - (void)setDisableHDOnCellular:(BOOL)arg1 {
-    arg1 = 0;
+    arg1 = NO;
     %orig;
 }
 %end
@@ -178,7 +178,7 @@ YTUserDefaults *ytThemeSettings;
 %group gShowStatusBarInOverlay
 %hook YTSettings
 - (BOOL)showStatusBarWithOverlay {
-    return 1;
+    return YES;
 }
 %end
 %end
@@ -186,38 +186,38 @@ YTUserDefaults *ytThemeSettings;
 %group gDisableRelatedVideosInOverlay
 %hook YTRelatedVideosViewController
 - (BOOL)isEnabled {
-    return 0;
+    return NO;
 }
 - (void)setEnabled:(BOOL)arg1 {
-    arg1 = 0;
+    arg1 = NO;
 	%orig;
 }
 %end
 %hook YTFullscreenEngagementOverlayView
 - (BOOL)isEnabled {
-    return 0;
+    return NO;
 } 
 - (void)setEnabled:(BOOL)arg1 {
-    arg1 = 0;
+    arg1 = NO;
     %orig;
 } 
 %end
 %hook YTFullscreenEngagementOverlayController
 - (BOOL)isEnabled {
-    return 0;
+    return NO;
 }
 - (void)setEnabled:(BOOL)arg1 {
-    arg1 = 0;
+    arg1 = NO;
     %orig;
 }
 %end
 %hook YTMainAppVideoPlayerOverlayView
 - (void)setInfoCardButtonHidden:(BOOL)arg1 {
-    arg1 = 1;
+    arg1 = YES;
     %orig;
 }
 - (void)setInfoCardButtonVisible:(BOOL)arg1 {
-    arg1 = 0;
+    arg1 = NO;
     %orig;
 }
 %end
@@ -261,7 +261,7 @@ YTUserDefaults *ytThemeSettings;
 %group gDisableVoiceSearch
 %hook YTSearchTextField
 - (void)setVoiceSearchEnabled:(BOOL)arg1 {
-    arg1 = 0;
+    arg1 = NO;
 	%orig;
 }
 %end
@@ -277,19 +277,19 @@ YTUserDefaults *ytThemeSettings;
 %group gDisableHints
 %hook YTSettings
 - (BOOL)areHintsDisabled {
-	return 1;
+	return YES;
 }
 - (void)setHintsDisabled:(BOOL)arg1 {
-    arg1 = 1;
+    arg1 = YES;
     %orig;
 }
 %end
 %hook YTUserDefaults
 - (BOOL)areHintsDisabled {
-	return 1;
+	return YES;
 }
 - (void)setHintsDisabled:(BOOL)arg1 {
-    arg1 = 1;
+    arg1 = YES;
     %orig;
 }
 %end
@@ -346,17 +346,17 @@ YTUserDefaults *ytThemeSettings;
 %group gDisableDoubleTapToSkip
 %hook YTDoubleTapToSeekController
 - (void)enableDoubleTapToSeek:(BOOL)arg1 {
-    arg1 = 0;
+    arg1 = NO;
     %orig;
 }
 - (void)showDoubleTapToSeekEducationView:(BOOL)arg1 {
-    arg1 = 0;
+    arg1 = NO;
     %orig;
 }
 %end
 %hook YTSettings
 - (BOOL)doubleTapToSeekEnabled {
-    return 0;
+    return NO;
 }
 %end
 %end
@@ -364,7 +364,7 @@ YTUserDefaults *ytThemeSettings;
 %group gHideOverlayDarkBackground
 %hook YTMainAppVideoPlayerOverlayView
 - (void)setBackgroundVisible:(BOOL)arg1 {
-    arg1 = 0;
+    arg1 = NO;
 	%orig;
 }
 %end
@@ -379,38 +379,38 @@ YTUserDefaults *ytThemeSettings;
 %end
 %hook YTRelatedVideosViewController
 - (BOOL)isEnabled {
-    return 0;
+    return NO;
 }
 - (void)setEnabled:(BOOL)arg1 {
-    arg1 = 0;
+    arg1 = NO;
 	%orig;
 }
 %end
 %hook YTFullscreenEngagementOverlayView
 - (BOOL)isEnabled {
-    return 0;
+    return NO;
 } 
 - (void)setEnabled:(BOOL)arg1 {
-    arg1 = 0;
+    arg1 = NO;
     %orig;
 } 
 %end
 %hook YTFullscreenEngagementOverlayController
 - (BOOL)isEnabled {
-    return 0;
+    return NO;
 }
 - (void)setEnabled:(BOOL)arg1 {
-    arg1 = 0;
+    arg1 = NO;
     %orig;
 }
 %end
 %hook YTMainAppVideoPlayerOverlayView
 - (void)setInfoCardButtonHidden:(BOOL)arg1 {
-    arg1 = 1;
+    arg1 = YES;
     %orig;
 }
 - (void)setInfoCardButtonVisible:(BOOL)arg1 {
-    arg1 = 0;
+    arg1 = NO;
     %orig;
 }
 %end
@@ -423,22 +423,22 @@ YTUserDefaults *ytThemeSettings;
 %group gEnableiPadStyleOniPhone
 %hook UIDevice
 - (long long)userInterfaceIdiom {
-    return 1;
+    return YES;
 } 
 %end
 %hook UIStatusBarStyleAttributes
 - (long long)idiom {
-    return 0;
+    return NO;
 } 
 %end
 %hook UIKBTree
 - (long long)nativeIdiom {
-    return 0;
+    return NO;
 } 
 %end
 %hook UIKBRenderer
 - (long long)assetIdiom {
-    return 0;
+    return NO;
 } 
 %end
 %end
@@ -464,7 +464,7 @@ YTUserDefaults *ytThemeSettings;
 %group gDisableVideoAutoPlay
 %hook YTPlaybackConfig
 - (void)setStartPlayback:(BOOL)arg1 {
-	arg1 = 0;
+	arg1 = NO;
 	%orig;
 }
 %end
@@ -494,7 +494,7 @@ YTUserDefaults *ytThemeSettings;
     return NULL;
 }
 - (BOOL)isVisible {
-    return 0;
+    return NO;
 }
 %end
 %hook YTInfoCardTeaserContainerView
@@ -502,7 +502,7 @@ YTUserDefaults *ytThemeSettings;
     return NULL;
 }
 - (BOOL)isVisible {
-    return 0;
+    return NO;
 }
 %end
 %hook YTSimpleInfoCardDarkTeaserView
@@ -518,7 +518,7 @@ YTUserDefaults *ytThemeSettings;
 %hook YTPaidContentOverlayView
 - (id)initWithParentResponder:(id)arg1 paidContentRenderer:(id)arg2 enableNewPaidProductDisclosure:(BOOL)arg3 {
     arg2 = NULL;
-    arg3 = 0;
+    arg3 = NO;
     return %orig;
 }
 %end
@@ -982,7 +982,7 @@ YTUserDefaults *ytThemeSettings;
 %group gEnableEnhancedSearchBar
 %hook YTColdConfig
 - (BOOL)isEnhancedSearchBarEnabled {
-    return 1;
+    return YES;
 }
 %end
 %end
@@ -990,7 +990,7 @@ YTUserDefaults *ytThemeSettings;
 %group gHideTabBar
 %hook YTPivotBarView
 - (BOOL)isHidden {
-    return 1;
+    return YES;
 }
 - (void)layoutSubviews {
 	%orig();
@@ -1059,22 +1059,22 @@ int selectedTabIndex = 0;
 
 %hook YTColdConfig
 - (BOOL)shouldUseAppThemeSetting {
-    return 1;
+    return YES;
 }
 - (BOOL)enableYouthereCommandsOnIos {
-    return 0;
+    return NO;
 }
 %end
 
 %hook YTYouThereController
 - (BOOL)shouldShowYouTherePrompt {
-    return 0;
+    return NO;
 }
 %end
 
 %hook YTSettings
 - (BOOL)allowAudioOnlyManualQualitySelection {
-    return 1;
+    return YES;
 }
 %end
 
